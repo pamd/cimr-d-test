@@ -11,7 +11,7 @@ if [ ! -f submitted/*.yml ] && [ ! -f submitted/*.yaml ]; then
 fi
 
 # Do nothing if it is not in a PR
-if [ ! -z $CIRCLE_PR_NUMBER ]; then
+if [ -z $CIRCLE_PR_NUMBER ]; then
     exit 0
 fi
 
