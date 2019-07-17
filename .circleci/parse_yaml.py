@@ -69,7 +69,7 @@ def check_yaml_in_ci():
 
 
 def dhu_get_yaml():
-    """dhu function that returns all yaml files in "submitted" directory."""
+    """dhu function that returns all yaml files in "submitted" subdir."""
     # https://stackoverflow.com/questions/3207219/how-do-i-list-all-files-of-a-directory
     import os
     submitted_files = os.listdir('submitted')
@@ -78,7 +78,7 @@ def dhu_get_yaml():
         if filename.endswith(".yml") or filename.endswith(".yaml"):
             submitted_yaml_files.append('submitted/' + filename)
         else:
-            raise Exception('Submitted file not acceptable: %s'% filename)
+            raise Exception(f'Submitted file not acceptable: {filename}')
 
     return submitted_yaml_files
 
@@ -289,7 +289,8 @@ if __name__ == '__main__':
 
     submitted_yaml_files = dhu_get_yaml()
     for yaml_file in submitted_yaml_files:
-        logging.info(f' processing metadata {yaml_file_path}.')
+        #logging.info(f' processing metadata {yaml_file_path}.')
+        logging.info(f' processing metadata {yaml_file}.')
         yaml_data = load_yaml(yaml_file)
         print(yaml_data)
         y = Yamler(yaml_data)
