@@ -18,7 +18,7 @@ fi
 
 # dhu: test only (remove this block when tests are done)
 if [ -z $CIRCLE_PR_NUMBER ]; then
-    CIRCLE_PR_NUMBER=999
+    CIRCLE_PR_NUMBER=test
 fi
 
 REQ_INDICATOR="req_success.txt"
