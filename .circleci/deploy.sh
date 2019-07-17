@@ -10,7 +10,7 @@ set -e -x
 function clear_submitted_dir() {
     if [ -f submitted/* ]; then
 	git rm submitted/*
-	git commit -m "CircleCI: keep submitted dir empty [skip ci]"
+	git commit -m "CircleCI: keep submitted/ dir empty [skip ci]"
     fi
 }
 
@@ -43,6 +43,7 @@ fi
 
 # Sync files in "submitted_data" directory to private S3 bucket "cimr-root",
 aws s3 sync s3://cimr-root/test_processed/PR_${PR_NUMBER}/ s3://cimr-d/
-git mv submitted/* processed
-git commit -m "CircleCI: save request(s) to processed/ [skip ci]"
+mkdir -p processed/PR_${PR_NUMBER}/
+git mv submitted/* processed/PR_${PR_NUMBER}/
+git commit -m "CircleCI: save request(s) to processed/ dir [skip ci]"
 git push --force --quiet origin master
