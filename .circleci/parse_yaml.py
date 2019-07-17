@@ -68,6 +68,21 @@ def check_yaml_in_ci():
     return yaml_file
 
 
+def dhu_get_yaml():
+    """dhu function that returns all yaml files in "submitted" subdir."""
+    # https://stackoverflow.com/questions/3207219/how-do-i-list-all-files-of-a-directory
+    import os
+    submitted_files = os.listdir('submitted')
+    submitted_yaml_files = []
+    for filename in submitted_files:
+        if filename.endswith(".yml") or filename.endswith(".yaml"):
+            submitted_yaml_files.append('submitted/' + filename)
+        else:
+            raise Exception(f'Submitted file not acceptable: {filename}')
+
+    return submitted_yaml_files
+
+
 def predefine_yaml():
     """A git-status-independent function used for cimr-d processing
     of a user-submitted yaml."""
@@ -261,19 +276,22 @@ class Yamler:
 
 if __name__ == '__main__':
 
-    if len(sys.argv) == 1:
-        yaml_file = check_yaml_in_ci()
-    else:
-        yaml_file = pathlib.Path(sys.argv[1])
+    #if len(sys.argv) == 1:
+    #    yaml_file = check_yaml_in_ci()
+    #else:
+    #    yaml_file = pathlib.Path(sys.argv[1])
 
-    try:
-        yaml_file_path = yaml_file.resolve(strict=True)
-    except FileNotFoundError:
-        logging.info(f' no new yaml file found to process.')
-        sys.exit(0)
+    #try:
+    #    yaml_file_path = yaml_file.resolve(strict=True)
+    #except FileNotFoundError:
+    #    logging.info(f' no new yaml file found to process.')
+    #    sys.exit(0)
 
-    logging.info(f' processing metadata {yaml_file_path}.')
-    yaml_data = load_yaml(yaml_file)
-    print(yaml_data)
-    y = Yamler(yaml_data)
-    y.check_data_file()
+    submitted_yaml_files = dhu_get_yaml()
+    for yaml_file in submitted_yaml_files:
+        #logging.info(f' processing metadata {yaml_file_path}.')
+        logging.info(f' processing metadata {yaml_file}.')
+        yaml_data = load_yaml(yaml_file)
+        print(yaml_data)
+        y = Yamler(yaml_data)
+        y.check_data_file()

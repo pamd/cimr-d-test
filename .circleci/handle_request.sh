@@ -20,7 +20,7 @@ fi
 #    PR_NUMBER=test
 #fi
 
-# Extract PR number from CIRCLE_PULL_REQUEST, see:
+# Extract PR number from CIRCLE_PULL_REQUEST, see more options at:
 # https://stackoverflow.com/q/3162385
 PR_NUMBER=$(echo ${CIRCLE_PULL_REQUEST##*/})
 
