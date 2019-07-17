@@ -11,6 +11,7 @@ function clear_submitted_dir() {
     if [ -f submitted/* ]; then
 	git rm submitted/*
 	git commit -m "CircleCI: keep submitted/ dir empty [skip ci]"
+	git push --force --quiet origin master
     fi
 }
 
@@ -22,7 +23,7 @@ git config --global push.default simple
 cd ~/cimr-d/
 git lfs install
 
-LATEST_COMMIT_ID=$(git log -1 --pretty=format:%h)
+LATEST_COMMIT_ID=$(git log -1 --pretty=format:%H)
 GITHUB_SEARCH_URL="https://api.github.com/search/issues?q=sha:${LATEST_COMMIT_ID}"
 PR_NUMBER=$(curl -s $GITHUB_SEARCH_URL | jq '.items[0].number')
 
