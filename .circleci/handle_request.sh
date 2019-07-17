@@ -11,15 +11,14 @@ if [ ! -f submitted/*.yml ] && [ ! -f submitted/*.yaml ]; then
 fi
 
 # Do nothing if it is not in a PR
-# dhu: uncomment this block when tests are done
-#if [ ! -z $CIRCLE_PR_NUMBER ]; then
-#    exit 0
-#fi
+if [ ! -z $CIRCLE_PR_NUMBER ]; then
+    exit 0
+fi
 
 # dhu: test only (remove this block when tests are done)
-if [ -z $CIRCLE_PR_NUMBER ]; then
-    CIRCLE_PR_NUMBER=test
-fi
+#if [ -z $CIRCLE_PR_NUMBER ]; then
+#    CIRCLE_PR_NUMBER=test
+#fi
 
 REQ_INDICATOR="req_success.txt"
 
@@ -38,7 +37,6 @@ python3 .circleci/process_submitted_data.py
 # Save submitted data to private S3 bucket
 if [ -d submitted_data ]; then
     aws s3 sync submitted_data s3://cimr-root/test-submitted/PR_${CIRCLE_PR_NUMBER}/
-    #aws s3 cp   $REQ_FILENAME  s3://cimr-root/test-submitted/PR_${CIRCLE_PR_NUMBER}/
 fi
 
 # Save processed data to private S3 bucket as well

@@ -7,6 +7,13 @@
 
 set -e -x
 
+function clear_submitted_dir() {
+    if [ -f submitted/* ]; then
+	git rm submitted/*
+	git commit -m "CircleCI: keep submitted dir empty [skip ci]"
+    fi
+}
+
 # Git config
 git config --global user.email "cimrroot@gmail.com"
 git config --global user.name "cimrroot"
@@ -15,14 +22,27 @@ git config --global push.default simple
 cd ~/cimr-d/
 git lfs install
 
-# Sync files in "submitted_data" directory to private S3 bucket "cimr-root",
-if [ -f my_request.done ]; then
-    aws s3 sync s3://cimr-root/ s3://cimr-root
+LATEST_COMMIT_ID=$(git log -1 --pretty=format:%h)
+GITHUB_SEARCH_URL="https://api.github.com/search/issues?q=sha:${LATEST_COMMIT_ID}"
+PR_NUMBER=curl -s $GITHUB_SEARCH_URL | jq '.items[0].number'
 
-    git rm my_request.yml
-    git commit -m "CircleCI: remove my_request.yml [skip ci]"
-    git push --force --quiet origin master
-
-    # Sync files in "processed_data" directory to public S3 bucket "cimr-d"
-    aws s3 sync processed_data s3://cimr-d
+# If we're not merging a PR, clean up "submitted/" dir and exit.
+if [ $PR_NUMBER='null' ]; then
+    clear_submitted_dir
+    exit 0
 fi
+
+# If we are merging a PR, but the indicator file doesn't exist in "cimr-root"
+# S3 bucket, data processing must either fail or not get involved, so we exit too.
+INDICATOR_KEY=test-submitted/PR_$PR_NUMBER/req_success.txt
+aws s3api head-object --bucket cimr-root --key $INDICATOR_KEY || NO_PROCESSED_DATA=true
+if [ $NO_PROCESSED_DATA ]; then
+    clear_submitted_dir
+    exit 0
+fi
+
+# Sync files in "submitted_data" directory to private S3 bucket "cimr-root",
+aws s3 sync s3://cimr-root/test_processed/PR_${PR_NUMBER}/ s3://cimr-d/
+git mv submitted/* processed
+git commit -m "CircleCI: save request(s) to processed/ [skip ci]"
+git push --force --quiet origin master
