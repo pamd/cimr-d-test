@@ -21,6 +21,7 @@ CONFIG_FILE_EXTENSION = ('yml', 'yaml')
 COMPRESSION_EXTENSION = ('gz', 'bz2', 'xz')
 BULK_EXTENSION = ('tgz', 'tar.gz', 'tar.bz2', 'tar.xz')
 FILE_EXTENSION = ('txt', 'tsv', 'txt.gz', 'tsv.gz')
+REQUEST_DIR = 'submitted/'
 
 logging.basicConfig(level='INFO')
 
@@ -42,7 +43,7 @@ def check_yaml_before_commit():
 
     for job in jobsplit:
         if job.endswith(CONFIG_FILE_EXTENSION):
-            yaml_file = pathlib.Path('.cimr-d/' + job.split('/')[-1])
+            yaml_file = pathlib.Path(REQUEST_DIR + job.split('/')[-1])
 
     return yaml_file
 
@@ -62,7 +63,7 @@ def check_yaml_in_ci():
 
     for job in jobsplit:
         if job.endswith(CONFIG_FILE_EXTENSION):
-            yaml_file = pathlib.Path('.cimr-d/' + job.split('/')[-1])
+            yaml_file = pathlib.Path(REQUEST_DIR + job.split('/')[-1])
 
     return yaml_file
 
@@ -261,7 +262,7 @@ class Yamler:
 if __name__ == '__main__':
 
     if len(sys.argv) == 1:
-        yaml_file = predefine_yaml()
+        yaml_file = check_yaml_in_ci()
     else:
         yaml_file = pathlib.Path(sys.argv[1])
 
