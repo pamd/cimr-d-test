@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/python:3.6.8
     working_directory: ~/cimr-d
-    resource_class: xlarge
+    #resource_class: xlarge
     steps:
       - checkout
       - run:
@@ -28,6 +28,8 @@ jobs:
           paths:
             - .git
             - .circleci
+            - submitted
+            - processed
 
   deploy:
     machine: true

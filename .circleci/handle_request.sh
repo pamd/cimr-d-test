@@ -5,10 +5,8 @@
 
 set -e -x
 
-REQ_FILENAME='request.yml'
-
-# Do nothing if user request file doesn't exist
-if [ ! -f $REQ_FILENAME ]; then
+# Do nothing if no user request file is found
+if [ ! -f submitted/*.yml ] && [ ! -f submitted/*.yaml ]; then
     exit 0
 fi
 
@@ -32,7 +30,7 @@ sudo pip install awscli
 aws s3 rm s3://cimr-root/submitted_data/PR_${CIRCLE_PR_NUMBER}/$REQ_INDICATOR
 
 # Parse user request, download data, and extract the tarball file
-python3 .circleci/parse_yaml.py $REQ_FILENAME
+python3 .circleci/parse_yaml.py
 
 # Process submitted data
 python3 .circleci/process_submitted_data.py
@@ -40,7 +38,7 @@ python3 .circleci/process_submitted_data.py
 # Save submitted data to private S3 bucket
 if [ -d submitted_data ]; then
     aws s3 sync submitted_data s3://cimr-root/test-submitted/PR_${CIRCLE_PR_NUMBER}/
-    aws s3 cp   $REQ_FILENAME  s3://cimr-root/test-submitted/PR_${CIRCLE_PR_NUMBER}/
+    #aws s3 cp   $REQ_FILENAME  s3://cimr-root/test-submitted/PR_${CIRCLE_PR_NUMBER}/
 fi
 
 # Save processed data to private S3 bucket as well
