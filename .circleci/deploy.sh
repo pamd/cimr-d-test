@@ -42,9 +42,10 @@ if [ $NO_PROCESSED_DATA ]; then
     exit 0
 fi
 
-# Sync files in "submitted_data" directory to private S3 bucket "cimr-root",
-aws s3 mv s3://cimr-d/test-only/work-in-progress/PR-${PR_NUMBER}/ s3://cimr-d/test-only/ --recursive
-aws s3 mv s3://cimr-root/test-only/work-in-progress/PR-${PR_NUMBER}/ s3://cimr-root/test-only/ --recursive
+# Move files in S3 buckets from temporary to permanent locations.
+TEMP_DIR="test-only/work-in-progress/PR-${PR_NUMBER}/"
+aws s3 mv s3://cimr-d/${TEMP_DIR}    s3://cimr-d/test-only/ --recursive
+aws s3 mv s3://cimr-root/${TEMP_DIR} s3://cimr-root/test-only/PR-${PR_NUMBER} --recursive
 
 # Add new commits
 mkdir -p processed/PR-${PR_NUMBER}/
