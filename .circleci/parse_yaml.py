@@ -75,6 +75,9 @@ def dhu_get_yaml():
     submitted_files = os.listdir('submitted')
     submitted_yaml_files = []
     for filename in submitted_files:
+        # Ignore the dummy placeholder file
+        if filename == '.place_holder':
+            continue
         if filename.endswith(".yml") or filename.endswith(".yaml"):
             submitted_yaml_files.append('submitted/' + filename)
         else:

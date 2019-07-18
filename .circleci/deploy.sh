@@ -7,10 +7,10 @@
 
 set -e -x
 
-function clear_submitted_dir() {
-    if [ -f submitted/* ]; then
-	git rm submitted/*
-	git commit -m "CircleCI: keep submitted/ dir empty [skip ci]"
+function delete_requests() {
+    if [ -f submitted/*.yml ] || [ -f submitted/*.yaml ]; then
+	git rm --ignore-unmatch submitted/*.yml submitted/*.yaml
+	git commit -m "CircleCI: Delete requests in submitted/ dir [skip ci]"
 	git push --force --quiet origin master
     fi
 }
@@ -23,28 +23,31 @@ git config --global push.default simple
 cd ~/cimr-d/
 git lfs install
 
-LATEST_COMMIT_ID=$(git log -1 --pretty=format:%H)
-GITHUB_SEARCH_URL="https://api.github.com/search/issues?q=sha:${LATEST_COMMIT_ID}"
+LATEST_COMMIT_HASH=$(git log -1 --pretty=format:%H)
+GITHUB_SEARCH_URL="https://api.github.com/search/issues?q=sha:${LATEST_COMMIT_HASH}"
 PR_NUMBER=$(curl -s $GITHUB_SEARCH_URL | jq '.items[0].number')
 
 # If we're not merging a PR, clean up "submitted/" dir and exit.
 if [ $PR_NUMBER == 'null' ]; then
-    clear_submitted_dir
+    delete_requests
     exit 0
 fi
 
-# If we are merging a PR, but the indicator file doesn't exist in "cimr-root"
-# S3 bucket, data processing must either fail or not get involved, so we exit too.
-INDICATOR_KEY=test-submitted/PR_$PR_NUMBER/req_success.txt
+# If we are merging a PR, but the indicator object is not found in S3 bucket,
+# data processing must either fail or not start at all, so we exit too.
+INDICATOR_KEY="test-only/work-in-progress/PR-${PR_NUMBER}/req_success.txt"
 aws s3api head-object --bucket cimr-root --key $INDICATOR_KEY || NO_PROCESSED_DATA=true
 if [ $NO_PROCESSED_DATA ]; then
-    clear_submitted_dir
+    delete_requests
     exit 0
 fi
 
 # Sync files in "submitted_data" directory to private S3 bucket "cimr-root",
-aws s3 sync s3://cimr-root/test_processed/PR_${PR_NUMBER}/ s3://cimr-d/
-mkdir -p processed/PR_${PR_NUMBER}/
-git mv submitted/* processed/PR_${PR_NUMBER}/
-git commit -m "CircleCI: save request(s) to processed/ dir [skip ci]"
+aws s3 mv s3://cimr-d/test-only/work-in-progress/PR-${PR_NUMBER}/ s3://cimr-d/test-only/ --recursive
+aws s3 mv s3://cimr-root/test-only/work-in-progress/PR-${PR_NUMBER}/ s3://cimr-root/test-only/ --recursive
+
+# Add new commits
+mkdir -p processed/PR-${PR_NUMBER}/
+git mv submitted/*.yml submitted/*.yaml processed/PR-${PR_NUMBER}/
+git commit -m "CircleCI: Save requests to processed/ dir [skip ci]"
 git push --force --quiet origin master
