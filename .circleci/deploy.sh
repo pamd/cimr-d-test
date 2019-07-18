@@ -1,9 +1,9 @@
 #!/bin/bash
 #
 # This script will be triggered when "master" branch is updated.
-# It copies new files in "submitted_data" and "processed_data" to S3 buckets,
-# then cleans up everything in "submitted_data" directory and commits the
-# change back to remote repo.
+# It moves submitted and processed data to permanent locations in S3 buckets,
+# cleans up everything in "submitted/" sub-directory and commits the
+# changes back to remote repo.
 
 set -e -x
 
