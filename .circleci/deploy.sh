@@ -36,15 +36,15 @@ fi
 
 # If we are merging a PR, but the indicator object is not found in S3 bucket,
 # data processing must either fail or not start at all, so we exit too.
-INDICATOR_FIELNAME="submitted_data/request.delivered"
-if [ ! -f $ INDICATOR_FIELNAME ]; then
+INDICATOR_FIELNAME="submitted_data/request.handled"
+if [ ! -f ${INDICATOR_FIELNAME} ]; then
     delete_requests
     exit 0
 fi
 
 # Move files in S3 buckets from temporary to permanent locations.
-aws s3 sync submitted_data/  s3://cimr-root/test-only/PR-${PR_NUMBER} --recursive
-aws s3 sync processed_data/  s3://cimr-d/test-only/                   --recursive
+aws s3 sync submitted_data/  s3://cimr-root/test-only/PR-${PR_NUMBER}/
+aws s3 sync processed_data/  s3://cimr-d/test-only/
 
 # Add new commits
 mkdir -p processed/PR-${PR_NUMBER}/

@@ -16,7 +16,7 @@ if [ ! -f submitted/*.yml ] && [ ! -f submitted/*.yaml ]; then
 fi
 
 # Name of flag file, whose existence indicates that request has been handled correctly.
-INDICATOR_FILENAME="submitted_data/request.delivered"
+INDICATOR_FILENAME="submitted_data/request.handled"
 
 # Remove flag file before data processing
 rm -rf $INDICATOR_FILENAME
