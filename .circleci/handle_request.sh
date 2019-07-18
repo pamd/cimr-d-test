@@ -5,11 +5,6 @@
 
 set -e -x
 
-# Do nothing if no user request file is found
-if [ ! -f submitted/*.yml ] && [ ! -f submitted/*.yaml ]; then
-    exit 0
-fi
-
 # Do nothing if it is not in a PR
 if [ -z $CIRCLE_PULL_REQUEST ]; then
     exit 0
@@ -19,17 +14,17 @@ fi
 # https://stackoverflow.com/q/3162385
 PR_NUMBER=$(echo ${CIRCLE_PULL_REQUEST##*/})
 
+# Install awscli (so that "aws" command is available)
+sudo pip install awscli
+
 # Key of the S3 object whose existence indicates that user request has been
 # handled successfully.
 INDICATOR_KEY="test-only/work-in-progress/PR-${PR_NUMBER}/req_success.txt"
 
-# Install awscli for "aws" command
-sudo pip install awscli
-
 # Delete the indicator file (if it exists)
 aws s3api delete-object --bucket cimr-root --key ${INDICATOR_KEY}
 
-# Parse user request, download data, and extract the tarball file
+# Parse user request, download data (and extract tarball file, if available)
 python3 .circleci/parse_yaml.py
 
 # Process submitted data
