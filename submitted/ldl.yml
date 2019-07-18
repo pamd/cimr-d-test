@@ -10,8 +10,8 @@ data_file:
         studies using predixcan
     # where cimr-d can load the file(s) from
     location:
-        url: https://zenodo.org/record/3338312/files/Coronary_Artery_Disease.txt.gz
-        md5: 708e2e11db89c358848d852fbf2c4ffa
+        url: https://zenodo.org/record/3338312/files/LDL_Cholesterol.txt.gz
+        md5: 39588388edf6633ee755b49ec59bb396
     compression: true
     keep_file_name: false
     output_name: ukb_adult_asthma_predixcan_logistic
