@@ -39,7 +39,7 @@ jobs:
           at: ~/cimr-d
       - add_ssh_keys:
           fingerprints:
-            - "60:6d:08:51:d2:1b:3d:5c:af:f8:e1:b5:41:d0:7e:20"
+            - "9e:7e:ab:ae:31:9b:02:2e:46:af:a8:6b:bc:f8:72:99"
       - run:
           name: Save submitted and processed data
           command: |
