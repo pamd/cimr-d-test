@@ -28,7 +28,7 @@ GITHUB_SEARCH_URL="https://api.github.com/search/issues?q=sha:${LATEST_COMMIT_ID
 PR_NUMBER=$(curl -s $GITHUB_SEARCH_URL | jq '.items[0].number')
 
 # If we're not merging a PR, clean up "submitted/" dir and exit.
-if [ $PR_NUMBER='null' ]; then
+if [ $PR_NUMBER == 'null' ]; then
     clear_submitted_dir
     exit 0
 fi
