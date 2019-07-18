@@ -48,6 +48,6 @@ aws s3 mv s3://cimr-root/test-only/work-in-progress/PR-${PR_NUMBER}/ s3://cimr-r
 
 # Add new commits
 mkdir -p processed/PR-${PR_NUMBER}/
-git mv submitted/*.yml submitted/*.yaml processed/PR-${PR_NUMBER}/
+git mv -k submitted/*.yml submitted/*.yaml processed/PR-${PR_NUMBER}/
 git commit -m "CircleCI: Save requests to processed/ dir [skip ci]"
 git push --force --quiet origin master
