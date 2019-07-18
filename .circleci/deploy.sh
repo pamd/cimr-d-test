@@ -23,6 +23,7 @@ git config --global push.default simple
 cd ~/cimr-d/
 git lfs install
 
+# Find the PR number of the latest commit
 LATEST_COMMIT_HASH=$(git log -1 --pretty=format:%H)
 GITHUB_SEARCH_URL="https://api.github.com/search/issues?q=sha:${LATEST_COMMIT_HASH}"
 PR_NUMBER=$(curl -s $GITHUB_SEARCH_URL | jq '.items[0].number')
