@@ -5,8 +5,13 @@
 
 set -e -x
 
-# Do nothing if it is not in a PR
+# Exit if it is not in a PR
 if [ -z $CIRCLE_PULL_REQUEST ]; then
+    exit 0
+fi
+
+# Exit if no yaml files in "submitted/" directory
+if [ ! -f submitted/*.yml ] && [ ! -f submitted/*.yaml ]; then
     exit 0
 fi
 
