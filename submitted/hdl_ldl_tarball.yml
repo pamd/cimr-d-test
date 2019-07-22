@@ -1,5 +1,5 @@
 # defined_as currently only supports 'upload'
-defined_as: upload
+defined_as: upload_bulk
 
 # data information
 data_file:
