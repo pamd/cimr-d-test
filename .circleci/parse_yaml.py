@@ -247,6 +247,16 @@ class Yamler:
                 if member.isreg():
                     member.name = os.path.basename(member.name)
                     tarred_data.extract(member, path=self.outdir)
+            # Move the downloaded tarball file to "downloaded_tarball" sub-dir
+            # to avoid it being processed later.
+            tarfile_subdir = 'submitted_data/downloaded_tarball/'
+            pathlib.Path(tarfile_subdir).mkdir()
+            os.rename(
+                self.downloaded_file,
+                tarfile_subdir + self.downloaded_file.split('/')[-1]
+            )
+        else:  # Raise exception for invalid tarball file
+            raise Exception(' invalid tarball file for upload_bulk.')
 
 
     def check_hash(self):
