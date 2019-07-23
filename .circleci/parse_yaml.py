@@ -235,7 +235,8 @@ class Yamler:
         else:
             raise ValueError(' provided md5 hash didn\'t match.')
 
-    def extract_archive(self):
+    def extract_bulk(self):
+        """Extract donwloaded bulk file."""
         import os
         import tarfile
 
@@ -274,7 +275,7 @@ class Yamler:
         self.check_hash()
 
         if self.yaml_data['defined_as'] == 'upload_bulk':
-            self.extract_archive()
+            self.extract_bulk()
 
     def check_data_file(self):
         """Standard set of Yamler functions to check information on the
