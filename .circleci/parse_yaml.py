@@ -274,7 +274,7 @@ class Yamler:
         self.check_hash()
 
         if self.yaml_data['defined_as'] == 'upload_bulk':
-            self.extract_tarfile()
+            self.extract_archive()
 
     def check_data_file(self):
         """Standard set of Yamler functions to check information on the
