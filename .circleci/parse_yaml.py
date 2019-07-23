@@ -235,7 +235,7 @@ class Yamler:
         else:
             raise ValueError(' provided md5 hash didn\'t match.')
 
-    def extract_tarfile(self):
+    def extract_archive(self):
         import os
         import tarfile
 
@@ -248,12 +248,12 @@ class Yamler:
                 if member.isreg():
                     member.name = os.path.basename(member.name)
                     tarred_data.extract(member, path=self.outdir)
-        else:  # Raise exception for invalid tarball file
-            raise Exception(' invalid tarball file for upload_bulk.')
+        else:  # Raise exception for invalid archive file
+            raise Exception(' invalid archive file for upload_bulk.')
 
-        # Move the downloaded tarball file to "downloaded_tarball" sub-dir
+        # Move the downloaded archivefile to "downloaded_archive" sub-dir
         # to avoid it being processed later.
-        tarfile_subdir = 'submitted_data/downloaded_tarball/'
+        tarfile_subdir = 'submitted_data/downloaded_archive/'
         pathlib.Path(tarfile_subdir).mkdir()
         new_downloaded_path = tarfile_subdir + self.downloaded_file.split('/')[-1]
         os.rename(
