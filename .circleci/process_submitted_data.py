@@ -20,6 +20,9 @@ for dir_, _, files in os.walk(root_dir):
 
 
 for submitted_file in submitted_file_split:
+    # Ignore "submitted_data/downloaded_tarball/" sub-dir
+    if submitted_file.startswith('submitted_data/downloaded_tarball/'):
+        continue
 
     if submitted_file.startswith('submitted_data'):
         dir_name, data_type, file_name = submitted_file.split('/')
@@ -36,10 +39,10 @@ for submitted_file in submitted_file_split:
             if not data_type == 'tad':
                 from cimr.processor.utils import Infiler
                 infile = Infiler(
-                    data_type, 
-                    submitted_file, 
-                    genome_build='b38', 
-                    update_rsid=False, 
+                    data_type,
+                    submitted_file,
+                    genome_build='b38',
+                    update_rsid=False,
                     outfile=str(outfile),
                     chunksize=10000000
                 )
@@ -54,4 +57,3 @@ for submitted_file in submitted_file_split:
             else:
                 logging.info(f' processed file already exists for {submitted_file}')
                 logging.info(f' if reprocessing, delete {outfile} and file a new pull request')
-
