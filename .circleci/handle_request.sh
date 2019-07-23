@@ -16,7 +16,7 @@ INDICATOR_FILENAME="submitted_data/request.handled"
 # Remove flag file before data processing
 rm -rf $INDICATOR_FILENAME
 
-# Parse user request, download data (and extract tarball file, if available)
+# Parse user request, download data (and extract archive file, if available)
 python3 .circleci/parse_yaml.py
 
 # Process submitted data

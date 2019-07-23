@@ -68,7 +68,7 @@ def check_yaml_in_ci():
     return yaml_file
 
 
-def dhu_get_yaml():
+def get_submitted_yaml():
     """dhu function that returns all yaml files in "submitted" subdir."""
     # https://stackoverflow.com/questions/3207219/how-do-i-list-all-files-of-a-directory
     import os
@@ -228,15 +228,17 @@ class Yamler:
             logging.error(f' file unavailable')
             sys.exit(1)
 
+    def check_hash(self):
+        """Compare md5 of the downloaded file to the provided value"""
+        if validate_hash(self.downloaded_file, self.hash):
+            logging.info(f' data is ready for cimr processing.')
+        else:
+            raise ValueError(' provided md5 hash didn\'t match.')
 
-    def bulk_download(self):
-        """Bulk download option assumes one of the following file types:
-        ['tgz', 'tar.gz', 'tar.bz2', 'tar.xz']
-        """
+    def extract_bulk(self):
+        """Extract donwloaded bulk file."""
         import os
         import tarfile
-
-        self.download()
 
         if tarfile.is_tarfile(self.downloaded_file):
             tarred_data = tarfile.open(
@@ -247,27 +249,33 @@ class Yamler:
                 if member.isreg():
                     member.name = os.path.basename(member.name)
                     tarred_data.extract(member, path=self.outdir)
+        else:  # Raise exception for invalid archive file
+            raise Exception(' invalid archive file for upload_bulk.')
 
-
-    def check_hash(self):
-        """Compare md5 of the downloaded file to the provided value"""
-        if validate_hash(self.downloaded_file, self.hash):
-            logging.info(f' data is ready for cimr processing.')
-        else:
-            raise ValueError(' provided md5 hash didn\'t match.')
+        # Move the downloaded archivefile to "downloaded_archive" sub-dir
+        # to avoid it being processed later.
+        tarfile_subdir = 'submitted_data/downloaded_archive/'
+        pathlib.Path(tarfile_subdir).mkdir()
+        new_downloaded_path = tarfile_subdir + self.downloaded_file.split('/')[-1]
+        os.rename(
+            self.downloaded_file,
+            tarfile_subdir + self.downloaded_file.split('/')[-1]
+        )
+        self.downloaded_file = new_downloaded_path
 
 
     def check_defined(self):
         """Check whether the submitted data is a single file"""
-        if self.yaml_data['defined_as'] == 'upload':
+        if self.yaml_data['defined_as'] in ['upload', 'upload_bulk']:
             self.download()
-        elif self.yaml_data['defined_as'] == 'upload_bulk':
-            self.bulk_download()
         else:
             logging.error(f' accepted \'defined_as\' variables are \'upload\' and \'upload_bulk\'.')
             sys.exit(1)
 
         self.check_hash()
+
+        if self.yaml_data['defined_as'] == 'upload_bulk':
+            self.extract_bulk()
 
     def check_data_file(self):
         """Standard set of Yamler functions to check information on the
@@ -290,7 +298,7 @@ if __name__ == '__main__':
     #    logging.info(f' no new yaml file found to process.')
     #    sys.exit(0)
 
-    submitted_yaml_files = dhu_get_yaml()
+    submitted_yaml_files = get_submitted_yaml()
     for yaml_file in submitted_yaml_files:
         #logging.info(f' processing metadata {yaml_file_path}.')
         logging.info(f' processing metadata {yaml_file}.')
