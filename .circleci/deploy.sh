@@ -42,6 +42,9 @@ if [ ! -f ${INDICATOR_FIELNAME} ]; then
     exit 0
 fi
 
+# Install awscli to make "aws" command available
+sudo pip install awscli
+
 # Move files in S3 buckets from temporary to permanent locations.
 aws s3 sync submitted_data/  s3://cimr-root/test-only/PR-${PR_NUMBER}/
 aws s3 sync processed_data/  s3://cimr-d/test-only/
