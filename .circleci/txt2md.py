@@ -1,6 +1,6 @@
 """This script generates README.md based on s3_list.txt. If an S3 object's
 parent folder(s) doesn't exist, this script will be smart enough to create
-the parent folder(s) as sperate items in output MD file.
+the parent folder(s) as separate items in output MD file.
 """
 
 TXT_FILENAME = "processed/s3_list.txt"
