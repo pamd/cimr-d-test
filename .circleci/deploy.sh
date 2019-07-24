@@ -61,4 +61,5 @@ git add processed/README.md
 git commit -m "Update REAME.md [skip ci]"
 
 # Push new commits to remote "master" branch
+ssh-keyscan github.com >> ~/.ssh/known_hosts
 git push --force --quiet origin master
