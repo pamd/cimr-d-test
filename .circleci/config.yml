@@ -34,7 +34,8 @@ jobs:
             - processed_data
 
   deploy:
-    machine: true
+    docker:
+      - image: circleci/python:3.6.8
     working_directory: ~/cimr-d
     steps:
       - attach_workspace:
