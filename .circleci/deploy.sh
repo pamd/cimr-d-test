@@ -57,7 +57,7 @@ git commit -m "CircleCI: Save requests to processed/ dir [skip ci]"
 # Update README.md, which lists all files in cimr-d S3 bucket
 aws s3 ls cimr-d --recursive --human-readable > processed/s3_list.txt
 python3 .circleci/txt2md.py
-git ci -m "Update REAME.md [skip ci]" processed/README.md
+git commit -m "Update REAME.md [skip ci]" processed/README.md
 
 # Push new commits to remote "master" branch
 git push --force --quiet origin master
