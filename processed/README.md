@@ -8,6 +8,8 @@ List of processed files (with links to AWS S3 bucket):
       * [Heart_Attack_UKB.txt.gz](https://cimr-d.s3.amazonaws.com/gwas/old/Heart_Attack_UKB.txt.gz): 171.4 MiB (updated on *2019-07-17 20:08:52*)
       * [LDL_Cholesterol.txt.gz](https://cimr-d.s3.amazonaws.com/gwas/old/LDL_Cholesterol.txt.gz): 58.4 MiB (updated on *2019-07-17 20:08:52*)
       * [LDL_Cholesterol_NMR.txt.gz](https://cimr-d.s3.amazonaws.com/gwas/old/LDL_Cholesterol_NMR.txt.gz): 217.8 MiB (updated on *2019-07-17 20:08:51*)
+  * tad
+    * old
       * [GSE105381.homo_sapiens.HepG2.tad.txt](https://cimr-d.s3.amazonaws.com/tad/old/GSE105381.homo_sapiens.HepG2.tad.txt): 183.9 KiB (updated on *2019-07-17 20:09:56*)
       * [GSE105491.homo_sapiens.SK-MEL-5.tad.txt](https://cimr-d.s3.amazonaws.com/tad/old/GSE105491.homo_sapiens.SK-MEL-5.tad.txt): 138.7 KiB (updated on *2019-07-17 20:09:56*)
       * [GSE105600.homo_sapiens.A549.tad.txt](https://cimr-d.s3.amazonaws.com/tad/old/GSE105600.homo_sapiens.A549.tad.txt): 114.7 KiB (updated on *2019-07-17 20:09:56*)
@@ -45,7 +47,8 @@ List of processed files (with links to AWS S3 bucket):
       * [GSE87112.homo_sapiens.Pancreas.tad.txt](https://cimr-d.s3.amazonaws.com/tad/old/GSE87112.homo_sapiens.Pancreas.tad.txt): 84.4 KiB (updated on *2019-07-17 20:09:56*)
       * [GSE87112.homo_sapiens.Spleen.tad.txt](https://cimr-d.s3.amazonaws.com/tad/old/GSE87112.homo_sapiens.Spleen.tad.txt): 147.1 KiB (updated on *2019-07-17 20:09:56*)
   * test-only
-      * [HDL_Cholesterol.txt.gz](https://cimr-d.s3.amazonaws.com/test-only/gwas/HDL_Cholesterol.txt.gz): 58.5 MiB (updated on *2019-07-24 16:02:09*)
+    * gwas
+      * [HDL_Cholesterol.txt.gz](https://cimr-d.s3.amazonaws.com/test-only/gwas/HDL_Cholesterol.txt.gz): 58.5 MiB (updated on *2019-07-24 20:57:16*)
       * [HDL_Cholesterol.txt.gz.old](https://cimr-d.s3.amazonaws.com/test-only/gwas/HDL_Cholesterol.txt.gz.old): 58.5 MiB (updated on *2019-07-22 16:35:45*)
       * [LDL_Cholesterol.txt.gz.old](https://cimr-d.s3.amazonaws.com/test-only/gwas/LDL_Cholesterol.txt.gz.old): 58.4 MiB (updated on *2019-07-22 16:35:58*)
       * [PR_16_HDL_Cholesterol.txt.gz](https://cimr-d.s3.amazonaws.com/test-only/gwas/PR_16_HDL_Cholesterol.txt.gz): 58.5 MiB (updated on *2019-07-23 15:54:46*)
