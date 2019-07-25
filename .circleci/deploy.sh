@@ -46,15 +46,15 @@ fi
 sudo pip install awscli
 
 # Move files in S3 buckets from temporary to permanent locations.
-aws s3 sync submitted_data/  s3://cimr-root/test-only/PR-${PR_NUMBER}/
-aws s3 sync processed_data/  s3://cimr-d/test-only/
+aws s3 sync submitted_data/  s3://cimr-root/PR-${PR_NUMBER}/
+aws s3 sync processed_data/  s3://cimr-d/
 
 # Move submitted YAML files to "processed/" sub-dir
 mkdir -p processed/PR-${PR_NUMBER}/
 git mv -k submitted/*.yml submitted/*.yaml processed/PR-${PR_NUMBER}/
 git commit -m "CircleCI: Save requests to processed/ dir [skip ci]"
 
-# Update README.md, which lists all files in cimr-d S3 bucket
+# Update README.md, which lists all files in "cimr-d" S3 bucket
 aws s3 ls cimr-d --recursive --human-readable > processed/s3_list.txt
 python3 .circleci/txt2md.py
 git add processed/README.md
