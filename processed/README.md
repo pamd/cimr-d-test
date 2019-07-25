@@ -1,6 +1,7 @@
 List of processed files (with links to AWS S3 bucket):
 ----
   * gwas
+    * [LDL_Cholesterol.txt.gz](https://cimr-d.s3.amazonaws.com/gwas/LDL_Cholesterol.txt.gz): 58.4 MiB (updated on *2019-07-25 15:42:36*)
     * old
       * [Coronary_Artery_Disease.txt.gz](https://cimr-d.s3.amazonaws.com/gwas/old/Coronary_Artery_Disease.txt.gz): 197.7 MiB (updated on *2019-07-17 20:08:51*)
       * [HDL_Cholesterol.txt.gz](https://cimr-d.s3.amazonaws.com/gwas/old/HDL_Cholesterol.txt.gz): 58.5 MiB (updated on *2019-07-17 20:08:51*)
