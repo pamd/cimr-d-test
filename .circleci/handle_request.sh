@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# This script is executed at the end of data crunching to save downloaded and
-# decompressed files in a temporary location in private S3 bucket.
+# This script parses yaml files in "submitted/" directory, downloads the data,
+# and processes them.
 
 set -e -x
 
@@ -15,7 +15,7 @@ fi
 # Exit if no yaml files in "submitted/" directory
 shopt -s nullglob dotglob
 yml_files=(submitted/*.yml submitted/*.yaml)
-if [ ${#files[@]} -eq 0 ]; then
+if [ ${#yml_files[@]} -eq 0 ]; then
     exit 0
 fi
 
