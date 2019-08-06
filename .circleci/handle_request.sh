@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# This script is executed at the end of data crunching to save downloaded and
-# decompressed files in a temporary location in private S3 bucket.
+# This script parses yaml files in "submitted/" directory, downloads the data,
+# and processes them.
 
 set -e -x
 
@@ -13,7 +13,9 @@ if [ -z "$PROCESSED_UNCHANGED" ]; then
 fi
 
 # Exit if no yaml files in "submitted/" directory
-if [ ! -f submitted/*.yml ] && [ ! -f submitted/*.yaml ]; then
+shopt -s nullglob dotglob
+yml_files=(submitted/*.yml submitted/*.yaml)
+if [ ${#yml_files[@]} -eq 0 ]; then
     exit 0
 fi
 
@@ -23,11 +25,10 @@ INDICATOR_FILENAME="submitted_data/request.handled"
 # Remove flag file before data processing
 rm -rf $INDICATOR_FILENAME
 
-# Parse user request, download data (and extract archive file, if available)
-python3 .circleci/parse_yaml.py
-
-# Process submitted data
-python3 .circleci/process_submitted_data.py
+#For each yaml file, download and process data
+for f in ${yml_files[*]}; do
+    cimr processor -process -yaml-file $f
+done
 
 # Create the flag file at the end
 touch $INDICATOR_FILENAME
