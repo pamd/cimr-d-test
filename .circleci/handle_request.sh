@@ -25,7 +25,7 @@ INDICATOR_FILENAME="submitted_data/request.handled"
 # Remove flag file before data processing
 rm -rf $INDICATOR_FILENAME
 
-#For each yaml file, download and process data
+# For each yaml file, download and process data
 for f in ${yml_files[*]}; do
     cimr processor -process -yaml-file $f
 done
