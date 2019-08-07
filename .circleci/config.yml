@@ -46,7 +46,7 @@ jobs:
       - run:
           name: Save submitted and processed data
           command: |
-            bash .circleci/git_lfs.sh
+            #bash .circleci/git_lfs.sh
             bash .circleci/deploy.sh
 
 workflows:
