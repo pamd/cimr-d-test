@@ -7,11 +7,11 @@ jobs:
     #resource_class: xlarge
     steps:
       - checkout
-      - run:
-          name: Install git-lfs
-          command: |
-            bash .circleci/git_lfs.sh
-            git lfs install && git lfs pull
+      #- run:
+      #    name: Install git-lfs
+      #    command: |
+      #      bash .circleci/git_lfs.sh
+      #      git lfs install && git lfs pull
       - add_ssh_keys:
           fingerprints:
             - "2e:fb:e9:d5:94:c6:f4:75:2c:cb:66:71:a9:af:93:8a"
